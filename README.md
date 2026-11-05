@@ -2,9 +2,9 @@
 
 Browser-based security tools as a Chrome extension. Generate strong passwords, passphrases, PINs, and usernames directly from your toolbar. No account, no server, no tracking.
 
-**Web app:** [passwordgen-mwd3.vercel.app](https://passwordgen-mwd3.vercel.app)  
+**Web app:** [pigeonofficial.vercel.app](https://pigeonofficial.vercel.app)  
 **Source (web):** [ZavionGames/Pigeon](https://github.com/ZavionGames/Pigeon)  
-**Privacy policy:** [passwordgen-mwd3.vercel.app/privacy.html](https://passwordgen-mwd3.vercel.app/privacy.html)
+**Privacy policy:** [pigeonofficial.vercel.app/privacy.html](https://pigeonofficial.vercel.app/privacy.html)
 
 ---
 
@@ -46,7 +46,7 @@ Coming soon.
 
 ## Privacy
 
-Pigeon requests no special browser permissions and collects no data whatsoever. All generation happens in-memory and nothing is ever transmitted or stored. See the full [privacy policy](https://passwordgen-mwd3.vercel.app/privacy.html).
+Pigeon requests no special browser permissions and collects no data whatsoever. All generation happens in-memory and nothing is ever transmitted or stored. See the full [privacy policy](https://pigeonofficial.vercel.app/privacy.html).
 
 ## License
 
