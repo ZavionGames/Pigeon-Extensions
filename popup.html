@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigeon</title>
+    <script src="theme-init.js"></script>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <header class="top-bar">
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch theme">
+            <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+        </button>
+    </header>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Pigeon</h1>
+            <p class="lede">Security tools in your browser.</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs" role="tablist" aria-label="Generator type">
+            <button type="button" class="tab active" role="tab" aria-selected="true"  data-tab="password">Password</button>
+            <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="passphrase">Passphrase</button>
+            <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="pin">PIN</button>
+            <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="username">Username</button>
+            <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="compare">Compare</button>
+        </div>
+
+        <!-- Shared result -->
+        <section class="result-section" aria-label="Generated result">
+            <label class="result-label" for="result">Generated result</label>
+            <div class="result-input-wrapper">
+                <input type="text" id="result" placeholder="Your result will appear here…" readonly autocomplete="off" spellcheck="false">
+                <button type="button" class="copy-btn" id="copyBtn" aria-label="Copy">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="strength" id="strength" hidden>
+                <div class="strength-bar" aria-hidden="true">
+                    <span class="strength-fill" id="strengthFill"></span>
+                </div>
+                <p class="strength-label" id="strengthLabel"></p>
+            </div>
+        </section>
+
+        <!-- PASSWORD panel -->
+        <div class="panel" id="panel-password">
+            <section class="length-section">
+                <div class="length-label">
+                    <label for="length">Password length</label>
+                    <span class="length-value" id="lengthValue">16</span>
+                </div>
+                <input type="range" id="length" min="8" max="64" value="16" aria-valuemin="8" aria-valuemax="64" aria-valuenow="16">
+            </section>
+            <section class="settings-section" aria-labelledby="settingsLabel">
+                <p class="settings-label" id="settingsLabel">Include characters</p>
+                <div class="checkbox-group">
+                    <label class="checkbox-item" for="uppercase">
+                        <input type="checkbox" id="uppercase" checked>
+                        <span>Uppercase (A–Z)</span>
+                    </label>
+                    <label class="checkbox-item" for="lowercase">
+                        <input type="checkbox" id="lowercase" checked>
+                        <span>Lowercase (a–z)</span>
+                    </label>
+                    <label class="checkbox-item" for="numbers">
+                        <input type="checkbox" id="numbers" checked>
+                        <span>Numbers (0–9)</span>
+                    </label>
+                    <label class="checkbox-item" for="symbols">
+                        <input type="checkbox" id="symbols" checked>
+                        <span>Symbols (!@#$%…)</span>
+                    </label>
+                    <label class="checkbox-item checkbox-item-wide" for="excludeSimilar">
+                        <input type="checkbox" id="excludeSimilar">
+                        <span>Exclude similar (il1O0)</span>
+                    </label>
+                </div>
+            </section>
+        </div>
+
+        <!-- PASSPHRASE panel -->
+        <div class="panel" id="panel-passphrase" hidden>
+            <section class="length-section">
+                <div class="length-label">
+                    <label for="wordCount">Number of words</label>
+                    <span class="length-value" id="wordCountValue">4</span>
+                </div>
+                <input type="range" id="wordCount" min="3" max="8" value="4" aria-valuemin="3" aria-valuemax="8" aria-valuenow="4">
+            </section>
+            <section class="settings-section">
+                <p class="settings-label">Separator</p>
+                <div class="separator-group">
+                    <label class="sep-item"><input type="radio" name="separator" value="-" checked> <span>Hyphen&nbsp;&nbsp;&nbsp;(word-word)</span></label>
+                    <label class="sep-item"><input type="radio" name="separator" value="_"> <span>Underscore (word_word)</span></label>
+                    <label class="sep-item"><input type="radio" name="separator" value="."> <span>Dot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(word.word)</span></label>
+                    <label class="sep-item"><input type="radio" name="separator" value=" "> <span>Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(word word)</span></label>
+                </div>
+            </section>
+        </div>
+
+        <!-- PIN panel -->
+        <div class="panel" id="panel-pin" hidden>
+            <section class="length-section">
+                <div class="length-label">
+                    <label for="pinLength">PIN length</label>
+                    <span class="length-value" id="pinLengthValue">4</span>
+                </div>
+                <input type="range" id="pinLength" min="4" max="12" value="4" aria-valuemin="4" aria-valuemax="12" aria-valuenow="4">
+            </section>
+        </div>
+
+        <!-- USERNAME panel -->
+        <div class="panel" id="panel-username" hidden>
+            <section class="settings-section">
+                <p class="settings-label">Style</p>
+                <div class="separator-group">
+                    <label class="sep-item"><input type="radio" name="usernameStyle" value="adjnoun" checked> <span>Adjective + Noun&nbsp;&nbsp;(SilentFox)</span></label>
+                    <label class="sep-item"><input type="radio" name="usernameStyle" value="adjnounnum"> <span>+ Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SilentFox42)</span></label>
+                    <label class="sep-item"><input type="radio" name="usernameStyle" value="word"> <span>Random word&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tunnel)</span></label>
+                    <label class="sep-item"><input type="radio" name="usernameStyle" value="wordnum"> <span>Word + Number&nbsp;&nbsp;&nbsp;&nbsp;(tunnel42)</span></label>
+                </div>
+            </section>
+        </div>
+
+        <button type="button" class="generate-btn" id="generateBtn">Generate password</button>
+
+        <!-- COMPARE panel -->
+        <div class="panel" id="panel-compare" hidden>
+            <section class="compare-section">
+                <div class="compare-row">
+                    <label class="result-label" for="cmpA">Password A</label>
+                    <div class="result-input-wrapper">
+                        <input type="text" id="cmpA" placeholder="Type or paste a password…" autocomplete="off" spellcheck="false">
+                        <button type="button" class="copy-btn" id="cmpAClear" aria-label="Clear A" title="Clear">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <div class="strength" id="strengthA" hidden>
+                        <div class="strength-bar"><span class="strength-fill" id="strengthFillA"></span></div>
+                        <p class="strength-label" id="strengthLabelA"></p>
+                    </div>
+                </div>
+                <div class="compare-row">
+                    <label class="result-label" for="cmpB">Password B</label>
+                    <div class="result-input-wrapper">
+                        <input type="text" id="cmpB" placeholder="Type or paste another password…" autocomplete="off" spellcheck="false">
+                        <button type="button" class="copy-btn" id="cmpBClear" aria-label="Clear B" title="Clear">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <div class="strength" id="strengthB" hidden>
+                        <div class="strength-bar"><span class="strength-fill" id="strengthFillB"></span></div>
+                        <p class="strength-label" id="strengthLabelB"></p>
+                    </div>
+                </div>
+                <div class="compare-verdict" id="compareVerdict" hidden></div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <footer class="popup-footer">
+        <a href="https://passwordgen-mwd3.vercel.app/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+    </footer>
+
+    <script src="popup.js"></script>
+</body>
+</html>
