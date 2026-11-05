@@ -31,6 +31,7 @@
             <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="passphrase">Passphrase</button>
             <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="pin">PIN</button>
             <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="username">Username</button>
+            <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="cracktime">Crack Time</button>
             <button type="button" class="tab"        role="tab" aria-selected="false" data-tab="compare">Compare</button>
         </div>
 
@@ -134,6 +135,43 @@
         </div>
 
         <button type="button" class="generate-btn" id="generateBtn">Generate password</button>
+
+        <!-- CRACK TIME panel -->
+        <div class="panel" id="panel-cracktime" hidden>
+            <section class="cracktime-tool">
+                <label class="result-label" for="crackInput">Enter a password to analyze</label>
+                <div class="result-input-wrapper">
+                    <input type="text" id="crackInput" placeholder="Type or paste a password…" autocomplete="off" spellcheck="false">
+                </div>
+                
+                <div class="strength" id="strengthCrack" hidden>
+                    <div class="strength-bar"><span class="strength-fill" id="strengthFillCrack"></span></div>
+                    <p class="strength-label" id="strengthLabelCrack" aria-live="polite"></p>
+                </div>
+
+                <div class="cracktime-scenarios" id="cracktimeScenarios" hidden>
+                    <h3>Attack scenarios</h3>
+                    <div class="scenario-grid">
+                        <div class="scenario-item">
+                            <p class="scenario-label">Fast offline hash (MD5)</p>
+                            <p class="scenario-value" id="scenarioFast">–</p>
+                            <p class="scenario-note">10 billion attempts/sec</p>
+                        </div>
+                        <div class="scenario-item">
+                            <p class="scenario-label">Slow offline hash (bcrypt)</p>
+                            <p class="scenario-value" id="scenarioSlow">–</p>
+                            <p class="scenario-note">10,000 attempts/sec</p>
+                        </div>
+                        <div class="scenario-item">
+                            <p class="scenario-label">Online attack</p>
+                            <p class="scenario-value" id="scenarioOnline">–</p>
+                            <p class="scenario-note">10 attempts/sec (throttled)</p>
+                        </div>
+                    </div>
+                    <p class="cracktime-disclaimer">These estimates assume the password is completely random. Dictionary words, patterns, and personal information dramatically reduce security.</p>
+                </div>
+            </section>
+        </div>
 
         <!-- COMPARE panel -->
         <div class="panel" id="panel-compare" hidden>
