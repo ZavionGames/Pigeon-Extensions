@@ -62,6 +62,14 @@ const sharedResultSection = document.querySelector('.result-section');
 // ── State ─────────────────────────────────────────────────────────────────────
 let activeTab = 'password';
 
+// ── Attack speed scenarios (attempts per second) ──────────────────────────────
+const ATTACK_SPEEDS = {
+    fastHash:   1e10,  // Fast offline hash (MD5, SHA-1): 10 billion/sec
+    slowHash:   1e4,   // Slow offline hash (bcrypt, Argon2): 10,000/sec
+    online:     10     // Online attack (login throttling): 10/sec
+};
+const DEFAULT_SPEED = ATTACK_SPEEDS.fastHash; // Worst case
+
 // ── Crypto helpers ────────────────────────────────────────────────────────────
 function randomInt(max) {
     if (max <= 0) throw new Error('max must be positive');
@@ -144,6 +152,39 @@ function generateUsername() {
     }
 }
 
+// ── Crack time estimation ─────────────────────────────────────────────────────
+function estimateCrackTime(bits, speed = DEFAULT_SPEED) {
+    if (bits <= 0) return 'instantly';
+    
+    // Average case: 2^(bits-1) / speed
+    // Use logarithmic calculation to avoid overflow
+    const log10Time = (bits - 1) * Math.log10(2) - Math.log10(speed);
+    const seconds = Math.pow(10, log10Time);
+    
+    if (seconds < 1) return 'instantly';
+    
+    const minute = 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const month = day * 30;
+    const year = day * 365;
+    const thousand = year * 1000;
+    const million = year * 1e6;
+    const billion = year * 1e9;
+    const trillion = year * 1e12;
+    
+    if (seconds < minute) return `${Math.round(seconds)} second${seconds !== 1 ? 's' : ''}`;
+    if (seconds < hour) return `${Math.round(seconds / minute)} minute${Math.round(seconds / minute) !== 1 ? 's' : ''}`;
+    if (seconds < day) return `${Math.round(seconds / hour)} hour${Math.round(seconds / hour) !== 1 ? 's' : ''}`;
+    if (seconds < month) return `${Math.round(seconds / day)} day${Math.round(seconds / day) !== 1 ? 's' : ''}`;
+    if (seconds < year) return `${Math.round(seconds / month)} month${Math.round(seconds / month) !== 1 ? 's' : ''}`;
+    if (seconds < thousand) return `${Math.round(seconds / year)} year${Math.round(seconds / year) !== 1 ? 's' : ''}`;
+    if (seconds < million) return `${Math.round(seconds / thousand)} thousand years`;
+    if (seconds < billion) return `${Math.round(seconds / million)} million years`;
+    if (seconds < trillion) return `${Math.round(seconds / billion)} billion years`;
+    return 'trillions of years';
+}
+
 // ── Strength ──────────────────────────────────────────────────────────────────
 function updateStrength(value) {
     if (!value || activeTab === 'pin' || activeTab === 'username') {
@@ -187,6 +228,7 @@ const TAB_LABELS = {
     passphrase: 'Generate passphrase',
     pin:        'Generate PIN',
     username:   'Generate username',
+    cracktime:  'Analyze password',
     compare:    'Compare'
 };
 
@@ -203,11 +245,11 @@ document.querySelectorAll('.tab').forEach(btn => {
         document.getElementById(`panel-${activeTab}`).hidden = false;
         generateBtn.textContent = TAB_LABELS[activeTab];
 
-        const isCompare = activeTab === 'compare';
-        sharedResultSection.hidden = isCompare;
-        generateBtn.hidden = isCompare;
+        const isSpecialTab = activeTab === 'compare' || activeTab === 'cracktime';
+        sharedResultSection.hidden = isSpecialTab;
+        generateBtn.hidden = isSpecialTab;
 
-        if (!isCompare) runGenerate();
+        if (!isSpecialTab) runGenerate();
     });
 });
 
@@ -275,6 +317,45 @@ document.getElementById('cmpA').addEventListener('input', updateCompare);
 document.getElementById('cmpB').addEventListener('input', updateCompare);
 document.getElementById('cmpAClear').addEventListener('click', () => { document.getElementById('cmpA').value = ''; updateCompare(); });
 document.getElementById('cmpBClear').addEventListener('click', () => { document.getElementById('cmpB').value = ''; updateCompare(); });
+
+// ── Crack Time ────────────────────────────────────────────────────────────────
+function updateCrackTime() {
+    const val = document.getElementById('crackInput').value;
+    const strengthCrack = document.getElementById('strengthCrack');
+    const scenariosDiv = document.getElementById('cracktimeScenarios');
+    
+    if (!val) {
+        strengthCrack.hidden = true;
+        scenariosDiv.hidden = true;
+        return;
+    }
+    
+    const bits = calcBitsForInput(val);
+    
+    // Render strength bar
+    let level = 'weak', label = 'Weak';
+    if (bits >= 80)      { level = 'very-strong'; label = 'Very strong'; }
+    else if (bits >= 60) { level = 'strong';      label = 'Strong'; }
+    else if (bits >= 40) { level = 'fair';         label = 'Fair'; }
+    
+    strengthCrack.hidden = false;
+    strengthCrack.dataset.level = level;
+    document.getElementById('strengthFillCrack').style.width = `${Math.min(100, (bits / 90) * 100)}%`;
+    document.getElementById('strengthLabelCrack').textContent = `${label} · ~${Math.round(bits)} bits`;
+    
+    // Calculate scenarios
+    const fast = estimateCrackTime(bits, ATTACK_SPEEDS.fastHash);
+    const slow = estimateCrackTime(bits, ATTACK_SPEEDS.slowHash);
+    const online = estimateCrackTime(bits, ATTACK_SPEEDS.online);
+    
+    document.getElementById('scenarioFast').textContent = fast;
+    document.getElementById('scenarioSlow').textContent = slow;
+    document.getElementById('scenarioOnline').textContent = online;
+    
+    scenariosDiv.hidden = false;
+}
+
+document.getElementById('crackInput').addEventListener('input', updateCrackTime);
 
 // ── Sliders ───────────────────────────────────────────────────────────────────
 function syncSlider(slider, display) {
