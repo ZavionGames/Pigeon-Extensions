@@ -6,7 +6,7 @@
 }
 
 html {
-    width: 380px;
+    width: 420px;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
@@ -47,7 +47,7 @@ html {
 
 body {
     font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-    width: 380px;
+    width: 420px;
     max-height: 600px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -144,7 +144,7 @@ h1 {
 .tab {
     flex: 1;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     color: var(--text-secondary);
     background: transparent;
@@ -421,6 +421,99 @@ input[type="range"]::-moz-range-thumb {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }
+}
+
+/* ── Crack Time ───────────────────────────────────────────────────────────── */
+.cracktime-tool {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#crackInput {
+    width: 100%;
+    padding: 11px 11px;
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--control-radius);
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
+    font-weight: 600;
+    outline: none;
+    letter-spacing: 0.02em;
+    appearance: none;
+}
+
+#crackInput:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+#crackInput::placeholder {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-family: inherit;
+    letter-spacing: 0;
+}
+
+.cracktime-scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cracktime-scenarios h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.scenario-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scenario-item {
+    padding: 10px 12px;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-color);
+    border-radius: var(--control-radius);
+}
+
+.scenario-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.scenario-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 5px 0;
+}
+
+.scenario-note {
+    font-size: 10px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.cracktime-disclaimer {
+    margin-top: 8px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    padding: 8px 10px;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-color);
+    border-radius: var(--control-radius);
 }
 
 /* ── Compare ──────────────────────────────────────────────────────────────── */
