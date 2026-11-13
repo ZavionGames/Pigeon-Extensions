@@ -4,7 +4,7 @@ Browser-based security tools as a Chrome extension. Generate strong passwords, p
 
 **Web app:** [pigeonofficial.vercel.app](https://pigeonofficial.vercel.app/)  
 **Source (web):** [ZavionGames/Pigeon](https://github.com/ZavionGames/Pigeon)  
-**Privacy policy:** [pigeonofficial.vercel.app/privacy](https://pigeonofficial.vercel.app/)
+**Privacy policy:** [pigeonofficial.vercel.app/privacy](https://pigeonofficial.vercel.app/privacy)
 
 ---
 
